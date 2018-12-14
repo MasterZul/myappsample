@@ -5,3 +5,5 @@ This is new thing from Master
 1
 
 Add New Thing
+
+Commit This Word From master remote branch
