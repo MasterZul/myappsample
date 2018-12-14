@@ -6,6 +6,8 @@ This is new thing from Master
 
 Add New Thing
 
+Add Another thing on read me But on Local Master Branch
+
 Commit This Word From master remote branch
 
 Add another commit to Master Remote Branch
