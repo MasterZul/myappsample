@@ -1,0 +1,139 @@
+Benefit Using Kubernetes
+- Speed of deployment
+- Ability to absorb change quickly
+- Ability to recover quickly
+- Hide complezity in the cluster
+
+Desired State - Declarative Condiguration
+Controller - Control loops (moniotr the system)
+One Master - THe API server
+
+Kubernetes Api Server
+1. Api Objects
+	- Collection of primitives to represent your system's state
+		- pod represent deployed container
+		- nodes represent the server that we work in our system
+	- Enables configuration of state
+		- Declaratively = Describe how the system look
+		- Imperatively = Execeute the command lime so the system to be in the state that we want it
+2. RESTful API over HTTP using JSON
+	-The sole way to interact with our cluster and other cluster
+3. The information is serialized and persisted into the cluster datastore
+
+Kubernetes Api Object
+
+1. Pods = Collection or single container deploy as a single unit
+2. Controller = Keep our system in desired state
+3. Services = Responsibility to provide a persistent access point to the application provided by our pods
+4. Storage = persistent storage in our application
+
+////////////////////////////////
+
+1. PODS
+	- One or more container
+	- It's your application or service
+	- The most basic unit of work
+	- Unit of scheduling
+	- Ephermal - no Pod is ever "redeployed"
+	- Atomicity - there're therer or Not (if one of the container inside pod die the pod is become unavailable)
+	- Kubernetes job to keeping your pods running
+	- More specifically keeping the desired state
+	- State - is the pod is up an d running
+	- Health - is the application in the Pod running
+	- Liveness probes
+
+2. CONTROLLER
+	- Create and manage Pods for you
+	- Define your desired state
+	- ReplicaSet 
+		- Define number of replicas 
+	- Deployment
+		- Manage rollout of ReplicaSet
+
+3. SERVICES
+	- Add persistency to our ephemeral world 
+	- Networking abstraction for Pod access
+	- IP and DNS name for the service
+	- Redeployed Pods automatically updates
+	- Scaled by adding/removing Pods
+	-Load balancing
+
+4. STORAGE
+	- Volume = storage backed by physical media that was directly accessible to a pod 
+	- Persistent Volume = pod-independent storage that's defined by the administrator ar the cluster level
+	- Persistent Volume Claim = Pod use this to get access to the storage from underlying cluster
+
+////////////////////////////////
+
+Kubernetes Architecture (Cluster Component)
+
+1. Master
+	- major control function of a cluster
+		- coordinate cluster operation
+		- monitoring and scheduling
+		- primary access point for cluster administration
+
+2. Node
+	- where application pods running 
+	- ensure that pods are up and running
+	- Node implement networking and ensure the networking reachability to the pods and the services running on worker nodes
+	- Cluster are generally comprised of multiple nodes based on the scalibility requirements of that particular cluster
+
+3. Scheduled/Add Ons
+	- are pods that provide services to the clutser (DNS pod use cluster's DNS operations)
+
+//Master - Control Plane Components//
+
+i. 	API Server
+		a. Central
+				- central to the control of our cluster
+				- All configuration changes pass through API
+		b. 	Simple
+				- have very simple interface
+		c. 	RESTful
+				-using basic get,put,post and delete operation
+		d. 	Update etcd
+				- validate that operation and persist its state into the cluster store
+
+ii.	Cluster Store
+		a. Persists State
+			- persist Kubernetes object into a key value
+		b. Key-value
+			- store called etcd
+		c. etcd
+		d. watch
+			- implement watches on the key that are store
+			- So it can drive event from changes to those values in the key-value data store 
+
+iii. Scheduler
+		a. Watches API Server
+			- for unschedules pods
+			- and schedules pods on node
+		b. Resources
+			- When sheduling pods, it will evaluate the resources required by that pods in terms of things like:
+				- CPU
+				- memory
+				- storage requirements
+			- ensure their availability when placing pods on specific nodes in the cluster
+		c. Respect contraints
+			- examples:
+				- keep two pods on the same nodes at all time (pod affinity)
+				- two pods are never on the same nodes (anti-infinity)
+
+iv. Controller Manager
+		a. Controller Loops
+			- implements the lifecyle of pods
+			- desired state of the system
+		b. Watch and Update
+			- watch the current state of the system
+			- update the API server ensure to heading towards the desired state 
+		c. ReplicaSets
+
+//Kubectrl//
+
+	- Way to contact API Server for administrative function 
+	- primary administrative command line tool for operating Kubernetes cluster
+
+
+
+////////////////////////////////
